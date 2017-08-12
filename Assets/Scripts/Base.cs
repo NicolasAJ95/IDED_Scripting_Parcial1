@@ -32,31 +32,62 @@ public class Base : MonoBehaviour
 
     public void AttackWithCatapult()
     {
+        catapult.Fire();
+        onTurnFinished();
         Debug.Log("Used Attack with catapult");
     }
 
     public void AttackWithRay()
     {
+        rayBeam.Fire();
+        onTurnFinished();
         Debug.Log("Used Attack with ray");
     }
 
     public void Repair()
     {
+        currentHP += 125.0f;
         Debug.Log("Used repair");
+        onTurnFinished();
     }
 
     public void Defend()
     {
         Debug.Log("Used defend");
         defending = true;
+        
+        onTurnFinished();
     }
 
     public void TakeDamage(RayBeam ray)
     {
+        if(defending == false)
+        {
+            currentHP -= ray.DamagePts;
+            Debug.Log("Daño recibido, salud: " + currentHP);
+        }
+
+        if (defending == true)
+        {
+            currentHP -= ray.DamagePts * 0.25f;
+            Debug.Log("Daño recibido, salud: " + currentHP);
+        }
+
     }
 
     private void TakeDamage(Projectile projectile)
     {
+        if (defending == false)
+        {
+            currentHP -= projectile.DamagePts;
+            Debug.Log("Daño recibido, salud: " + currentHP);
+        }
+
+        if (defending == true)
+        {
+            currentHP -= projectile.DamagePts * 0.25f;
+            Debug.Log("Daño recibido, salud: " + currentHP);
+        }
     }
 
     // Use this for initialization
@@ -71,8 +102,23 @@ public class Base : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
-        if (canAttack)
+        if (Input.GetKeyDown(KeyCode.A) && canAttack)
         {
+            AttackWithCatapult();
         }
+
+        if (Input.GetKeyDown(KeyCode.S) && canAttack)
+        {
+            AttackWithRay();
+        }
+
+
     }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.tag == "Bullet")
+            TakeDamage();
+    }
+
 }

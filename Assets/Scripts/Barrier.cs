@@ -27,10 +27,23 @@ public class Barrier : MonoBehaviour
 
     public void TakeDamage(RayBeam ray)
     {
+
+    
+            currentHP -= ray.DamagePts;
+            Debug.Log("Daño recibido, salud: " + currentHP);
+       
+
+
     }
 
-    public void TakeDamage(Projectile projectile)
+    private void TakeDamage(Projectile projectile)
     {
+
+        
+            currentHP -= projectile.DamagePts;
+            Debug.Log("Daño recibido, salud: " + currentHP);
+        
+
     }
 
     // Use this for initialization

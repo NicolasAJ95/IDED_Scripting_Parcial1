@@ -21,10 +21,20 @@ public class RayBeam : MonoBehaviour
 
     public void Fire()
     {
-    }
+        RaycastHit hit;
+        Ray ray = new Ray(transform.position, transform.right);
 
-    private void OnDrawGizmos()
+        if (Physics.Raycast(ray, out hit, rayDistance ))
+        {
+            Debug.Log("Raybeam hit");
+            Transform objectHit = hit.transform;
+            Debug.Log(objectHit.tag);
+            // Do something with the object that was hit by the raycast.
+            
+        }
+    }
+        private void OnDrawGizmos()
     {
-        Debug.DrawRay(transform.position, targetDirection);
+        Debug.DrawRay(transform.position, transform.right, Color.green);
     }
 }
